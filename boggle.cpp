@@ -118,34 +118,42 @@ std::set<std::string> boggle(const std::set<std::string>& dict, const std::set<s
         return false;
     }
 
-    bool wordFound = false;
-    if (dict.find(word) != dict.end()) {
-		//std::cout << "Found word in dict" << std::endl;
-        for (auto it = result.begin(); it != result.end(); ) {
-            if (it->substr(0, word.size()) == word && it->size() < word.size()) {
-                it = result.erase(it);
-            } else {
-                ++it;
-            }
-        }
-        auto existing = result.find(word);
-        if (existing == result.end()) {
-			//std::cout << "insertin word " << word << std::endl;
-            result.insert(word);
-        }
+    bool wordFound = boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
+
+	 if (!wordFound && dict.find(word) != dict.end()) {
+        result.insert(word);
+        return true;
     }
 
-    if (boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc)) {
-        wordFound = true;
-		 //std::cout << "wordFound is true " << wordFound <<  std::endl;
-    }
+    return wordFound;
 
-     //std::cout << "wordFound: " << wordFound <<  std::endl;
-    if (wordFound || dict.find(word) != dict.end()) {
-    	return true;
-	} 
-	//std::cout << "returning false" << std::endl;
-    return false;
+    // if (dict.find(word) != dict.end()) {
+	// 	//std::cout << "Found word in dict" << std::endl;
+    //     for (auto it = result.begin(); it != result.end(); ) {
+    //         if (it->substr(0, word.size()) == word && it->size() < word.size()) {
+    //             it = result.erase(it);
+    //         } else {
+    //             ++it;
+    //         }
+    //     }
+    //     auto existing = result.find(word);
+    //     if (existing == result.end()) {
+	// 		//std::cout << "insertin word " << word << std::endl;
+    //         result.insert(word);
+    //     }
+    // }
+
+    // if (boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc)) {
+    //     wordFound = true;
+	// 	 //std::cout << "wordFound is true " << wordFound <<  std::endl;
+    // }
+
+    //  //std::cout << "wordFound: " << wordFound <<  std::endl;
+    // if (wordFound || dict.find(word) != dict.end()) {
+    // 	return true;
+	// } 
+	// //std::cout << "returning false" << std::endl;
+    // return false;
 	
 }
 
