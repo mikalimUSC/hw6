@@ -91,9 +91,62 @@ std::set<std::string> boggle(const std::set<std::string>& dict, const std::set<s
 	return result;
 }
 
-bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board, 
-								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
-{
+// bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board, 
+// 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
+// {
 //add your solution here!
 
+
+	bool boggleHelper(const std::set<std::string>& dict, 
+                  const std::set<std::string>& prefix, 
+                  const std::vector<std::vector<char> >& board, 
+                  std::string word, 
+                  std::set<std::string>& result, 
+                  unsigned int r, unsigned int c, 
+                  int dr, int dc)
+{
+	//out of bounds
+	//std::cout << "board size: " << board.size() << std::endl;
+    if (r >= board.size() || c >= board[0].size()) {
+		//std::cout << "out of bounds! " << board.size() << std::endl;
+        return false;
+    }
+    word += board[r][c];
+
+	//aka if not completed word
+    if (prefix.find(word) == prefix.end() && dict.find(word) == dict.end()) {
+        return false;
+    }
+
+    bool wordFound = false;
+    if (dict.find(word) != dict.end()) {
+		//std::cout << "Found word in dict" << std::endl;
+        for (auto it = result.begin(); it != result.end(); ) {
+            if (it->substr(0, word.size()) == word && it->size() < word.size()) {
+                it = result.erase(it);
+            } else {
+                ++it;
+            }
+        }
+        auto existing = result.find(word);
+        if (existing == result.end()) {
+			//std::cout << "insertin word " << word << std::endl;
+            result.insert(word);
+        }
+    }
+
+    if (boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc)) {
+        wordFound = true;
+		 //std::cout << "wordFound is true " << wordFound <<  std::endl;
+    }
+
+     //std::cout << "wordFound: " << wordFound <<  std::endl;
+    if (wordFound || dict.find(word) != dict.end()) {
+    	return true;
+	} 
+	//std::cout << "returning false" << std::endl;
+    return false;
+	
 }
+
+
