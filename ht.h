@@ -31,7 +31,7 @@ struct Prober {
 template <typename KeyType>
 struct LinearProber : public Prober<KeyType> {
 
-    HASH_INDEX_T next() override
+    HASH_INDEX_T next() 
     {
         // Complete the condition below that indicates failure
         // to find the key or an empty slot
